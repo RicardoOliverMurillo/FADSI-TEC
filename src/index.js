@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 //Importing routes
 const userRoutes = require('./routes/userRoutes');
+const placesRoutes = require('./routes/placesRoutes');
 
 
 //init DB
@@ -22,6 +23,8 @@ const router = express.Router();
 //Routes
 userRoutes(router)
 router.get('/', userRoutes);
+placesRoutes(router)
+router.get('/places', placesRoutes);
 
 
 //views engine

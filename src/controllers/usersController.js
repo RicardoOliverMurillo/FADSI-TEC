@@ -83,7 +83,7 @@ exports.loginUser = async(req, res) =>{
                 } else {
                     userGlobal = dataUser.email;
                     nameGlobal = "admin";
-                    res.render('AdminViews/adminView')
+                    res.render('AdminViews/mainView')
                 }
                 
             }else{

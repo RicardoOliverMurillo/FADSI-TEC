@@ -1,0 +1,34 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Origin place</th>    
+                        <th>Wish place</th>
+                        <th>Rating</th>
+                        <th>Phone number</th>
+                        <th>Website</th>
+                        <th>Distance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < allWishes.length; i++){ %>
+                        <tr>
+                            <td><%= allWishes[i].oriPlace%></td>
+                            <td><%= allWishes[i].name%></td>
+                            <td><%= allWishes[i].rating%></td>
+                            <td><%= allWishes[i].international_phone_number%></td>
+                            <td><%= allWishes[i].website%></td>
+                            <td><%= allWishes[i].distance%></td>       
+                        </tr>
+                    <%}%>    
+                </tbody>
+            </table>
+        </div>
+    </div>    
+</div>
+
+<% include partials/footer%>

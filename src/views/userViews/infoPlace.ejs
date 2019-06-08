@@ -1,0 +1,25 @@
+<% include partials/header%>
+
+<div class="container">
+        <div class="row">
+            <div class="col-md-5 mx-auto">
+                <ul class="list-group">
+                    <li class="list-group-item">ID: <%= placeData.idPlace%></li>
+                    <li class="list-group-item">Name: <%= placeData.name%></li>
+                    <li class="list-group-item">International phone number: <%= placeData.international_phone_number%></li>
+                    <li class="list-group-item">Website: <%= placeData.website%></li>
+                    <li class="list-group-item">Rating: <%= placeData.rating%></li>
+                    <div>
+                        <h6>Image</h6>
+                        <img src="<%= placeData.icon%>" class="rounded mx-auto d-block">
+                    </div>
+                </ul>
+                
+                <div>
+                    <a href="/wishList/<%= placeData.idPlace%>" class="btn btn-success btn-block">Add to wish list</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<% include partials/footer%>

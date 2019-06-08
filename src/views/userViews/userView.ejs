@@ -2,7 +2,7 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-7 mx-auto">
+        <div class="col-md-12 mx-auto">
             <h4>Available Places</h4>
             <table class="table table-bordered table-hover">
                 <thead>
@@ -22,7 +22,8 @@
                             <td><%= places[i].category%></td>
                             <td><%= places[i].rating%></td>
                             <td>
-                                <a href="products/<%= places[i]._id%>" class="btn btn-success">Products</a>
+                                <a href="/products/<%= places[i]._id%>" class="btn btn-success">Products</a>
+                                <a href="/nearbySearch/<%= places[i]._id%>" class="btn btn-info">Search places</a>
                             </td>
                          </tr>
                         <%}%>    

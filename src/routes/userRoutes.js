@@ -13,6 +13,11 @@ module.exports = (router) => {
     router.get('/updateView', Users.updateView);
     router.get('/deleteUser/:id', Users.deleteUser);
     router.get('/addDelivery', Users.addDelivery);
+    router.get('/nearbySearch/:id', Users.nearbysearch);
+    router.get('/searchPlaces', Users.searchPlaces);
+    router.get('/wishList/:id', Users.wishList);
+    router.get('/getWish', Users.getWishList);
+    router.get('/placeDetails/:id', Users.placeDetails);
     router.post('/login', Users.loginUser);
     router.post('/registerInfo', Users.createUser)
     

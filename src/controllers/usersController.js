@@ -3,12 +3,16 @@ const Users = require('../models/users');
 const Place = require('../models/Places');
 const Delivery = require('../models/Delivery');
 const Product = require('../models/Products');
+const Wish = require('../models/WishList');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const SECRET_KEY = 'secretkey123456';
+var GoogleMapsAPI = require('googlemaps');
+var https = require('https');
 //variables globales
 var userGlobal = "";
 var pedido = [];
+var place;
 
 //Controlador para abrir la vista de administrador
 exports.adminPage = (req, res) =>{
@@ -201,9 +205,9 @@ exports.viewCart = async (req,res)=>{
     for(var i = 0; i<pedido.length;i++){
         total = total+ pedido[i].price; 
     }
-    res.render("UserViews/viewCart",{pedido, dataUser, total});
+    res.render("userViews/viewCart",{pedido, dataUser, total});
 }
-
+//Controlador para insertar un pedido
 exports.addDelivery = async(req, res)=>{
     var total = 0;
     for(var i = 0; i<pedido.length;i++){
@@ -220,3 +224,140 @@ exports.addDelivery = async(req, res)=>{
     pedido = [];
     res.redirect("/home");
 }
+//Controlador para buscar abrir la ventana de lugares cerca
+exports.nearbysearch = async(req, res)=>{
+    const {id} = req.params;
+    const PlacesFound = [];
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    await Place.findById({_id : id}, (err, place)=>{
+        if (err){
+            console.log(err);
+        } else{
+            res.render("userViews/searchPlaces", {place,dataUser, PlacesFound});
+        }
+    });
+}
+//Controlador para obtener la informacion de un lugar cercano en radios
+exports.searchPlaces = function(req, res){
+    var PlacesFound = [];
+    var urlBase = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
+    var key = "AIzaSyAKDFkr-WOl4mk3kNKAR57T7f51ZEgIiNg";
+    var location = req.query.latitude+","+req.query.longitude
+    var radius = req.query.radius
+    var type = "restaurant"
+
+    var url = urlBase+location+"&radius="+radius+"&types="+type+"&key="+key;
+    
+    https.get(url, function(response) {
+    var body ='';
+    response.on('data', function(chunk) {
+        body += chunk;
+    });
+    response.on('end', function() {
+        var places = JSON.parse(body);
+        for (var i = 0; i<(places.results).length; i++){
+            const placeData = {
+                idPlace: places.results[i].place_id,
+                latitude: places.results[i].geometry.location.lat,
+                longitude: places.results[i].geometry.location.lng,
+                address: places.results[i].formatted_address,
+                category: places.results[i].types,
+                rating:places.results[i].rating,
+                name: places.results[i].name
+            }
+            PlacesFound.push(placeData);
+        }
+        Users.find({email : userGlobal}, function(err, data) {
+            if (err) throw err;
+            place ={
+                latitude: req.query.latitude,
+                longitude: req.query.longitude,
+                radius : req.query.radius,
+                name : req.query.name
+            }
+            const dataUser = data[0];
+        res.render("userViews/searchPlaces", {PlacesFound,dataUser, place})
+        })
+    });
+    }).on('error', function(e) {
+        console.log("Got error: " + e.message);
+    });
+  };
+
+  //Controlador para ver la informacion detallada del lugar cercano en radios
+  exports.placeDetails = (req, res)=>{
+    const {id} = req.params;
+    var urlBase = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
+    var key = "AIzaSyAKDFkr-WOl4mk3kNKAR57T7f51ZEgIiNg";
+    var fields = "&fields=name,rating,international_phone_number,website,icon";
+    var url = urlBase+id+fields+"&key="+key;
+    
+    https.get(url, function(response) {
+    var body ='';
+    response.on('data', function(chunk) {
+        body += chunk;
+    });
+    response.on('end', function() {
+        var places = JSON.parse(body);
+        const placeData = {
+            idPlace: id,
+            icon: places.result.icon,
+            international_phone_number: places.result.international_phone_number,
+            name: places.result.name,
+            website: places.result.website,
+            rating:places.result.rating,
+        }
+        Users.find({email : userGlobal}, function(err, data) {
+            if (err) throw err;
+            const dataUser = data[0];
+        res.render("userViews/infoPlace", {placeData,dataUser})
+        })
+    });
+    }).on('error', function(e) {
+        console.log("Got error: " + e.message);
+    });
+  };
+
+  //Controlador para agregar a la lista de deseos
+  exports.wishList = async (req, res)=>{
+    const {id} = req.params;
+    var urlBase = "https://maps.googleapis.com/maps/api/place/details/json?placeid=";
+    var key = "AIzaSyAKDFkr-WOl4mk3kNKAR57T7f51ZEgIiNg";
+    var fields = "&fields=name,rating,international_phone_number,website,icon";
+    var url = urlBase+id+fields+"&key="+key;
+    
+    https.get(url, function(response) {
+    var body ='';
+    response.on('data', function(chunk) {
+        body += chunk;
+    });
+    response.on('end', function() {
+        var places = JSON.parse(body);
+        const placeData = {
+            oriPlace: place.name,
+            idPlace: id,
+            icon: places.result.icon,
+            international_phone_number: places.result.international_phone_number,
+            name: places.result.name,
+            website: places.result.website,
+            rating:places.result.rating,
+            distance : place.radius,
+            idClient : userGlobal
+        }
+        const newWish = new Wish(placeData);
+        newWish.save();
+        res.redirect("/home");
+    });
+    }).on('error', function(e) {
+        console.log("Got error: " + e.message);
+    });
+  };
+
+  //Controlador para mostar toda la lista de deseos
+  exports.getWishList = async (req, res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const allWishes = await Wish.find({idClient: dataUser.email});
+    res.render("userViews/wishList", {allWishes, dataUser});
+  }

@@ -49,7 +49,7 @@ exports.updatePlace = async (req, res) => {
 exports.findPlace = async (req,res)=>{
     const { id } = req.params;
     var urlBase = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ id ;
-    var key = "[ADD KEY]"
+    var key = "&key=[ADD KEY]"
     var url = urlBase + key;
       console.log(url);
     https.get(url, function(response) {

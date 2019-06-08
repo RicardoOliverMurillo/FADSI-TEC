@@ -73,7 +73,7 @@ exports.findPlace = async (req,res)=>{
     }).on('error', function(e) {
       console.log("Got error: " + e.message);
     });
-    res.render('AddPlaceView', {place})
+    //res.render('AddPlaceView', {placeData})
 }
 
 exports.getFindPlaces = async (req, res) => {

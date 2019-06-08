@@ -1,56 +1,36 @@
 <% include partials/header%>
-<div class="container">
-    <div class="row">
-        <!--FORM-->
-        <div class="col-md-5">
-            <div class="card">
-                <div class="card-body">
-                    <form action="/addBooks" method="POST">
-                        <div class="form-group">
-                            <input type="text" name="idBook" placeholder="Inserte el id del libro" class="form-control">
+<div class="col-md-5">
+    <div class="card">
+        <div class="card-body">
+                <form action="/addPlace" method="POST">
+                    <div class="form-group">
+                            <input type="text" name="name" placeholder="Insert place ID" class="form-control" value="<%= placeData.name%>">
                         </div>
-                        <div class="form-group">
-                                <input type="text" name="name" placeholder="Inserte el nombre del libro" class="form-control">
+                    <div class="form-group">
+                        <input type="text" name="idPlace" placeholder="Insert place ID" class="form-control" value="<%= placeData.idPlace%>">
+                    </div>
+                    <div class="form-group">
+                            <input type="number" step="0.0000001" name="latitude" placeholder="Insert latitude" class="form-control" value="<%= placeData.latitude%>">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="longitude" step="0.0000001" placeholder="Insert longitude" class="form-control" value="<%= placeData.longitude%>">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="address" placeholder="Insert address" class="form-control" value="<%= placeData.address%>">
+                    </div>
+                    <div class="form-group">
+                            <input type="text" name="category" placeholder="Insert place ID" class="form-control" value="<%= placeData.category%>">
                         </div>
-                        <div class="form-group">
-                            <select class="browser-default custom-select" name="topic" value="selected">
-                                <option>Seleccione una opción</option>
-                                <option>Ingeniería</option>
-                                <option>Administración</option>
-                                <option>Artes</option>
-                                <option>Historia</option>
-                                <option>Matemáticas</option>
-                                <option>Ficción</option>
-                                <option>Literatura</option>
-                            </select>
+                    <div class="form-group">
+                        <input type="text" name="rating" placeholder="Insert rating" class="form-control" value="<%= placeData.rating%>">
+                    </div>
+                    <div class="form-group">
+                            <input type="number" name="qDealer" placeholder="Insert how many dealers" class="form-control">
                         </div>
-                        <div class="form-group">
-                                <input type="text" name="description" placeholder="Inserte una descripción del libro" class="form-control">
-                        </div>
-                        <div class="form-group">
-                                <input type="text" name="qAvailable" placeholder="Inserte la cantidad de libros disponibles" class="form-control">
-                        </div>
-                        <div class="form-group">
-                                <input type="text" name="price" placeholder="Inserte el precio del libro" class="form-control">
-                        </div>
-                        <div>
-                            <button type="submit" class="btn btn-success btn-block">Agregar Libro</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <!--LIST-->
-        <div class="col-md-7">
-            <table class="table table-bordered table-hover">
-                <thead>
-                    <tr>
-                    </tr>
-                </thead>
-                <tbody>   
-
-                </tbody>
-            </table>
+                    <div>
+                        <button type="submit" class="btn btn-success btn-block">Add Place</button>
+                    </div>
+                </form>
         </div>
     </div>
 </div>

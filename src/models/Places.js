@@ -4,18 +4,18 @@ mongoose.set('useCreateIndex', true);
 
 const placeSchema = new Schema({
     idPlace: {
-        type: Number,
+        type: String,
         required: true, 
         trim: true
     },
     latitude: {
         type: Number,
-        required: true, 
+        //required: true, 
         trim: true
     },
     longitude: {
         type: Number,
-        required: true, 
+        //required: true, 
         trim: true
     },
     address: {
@@ -31,12 +31,12 @@ const placeSchema = new Schema({
     },
     image: {
         type: String,
-        required: true, 
+        //required: true, 
         trim: true
     },
     phone: {
         type: String,
-        required: true, 
+        //required: true, 
         trim: true
     },    
     rating: {
@@ -47,12 +47,12 @@ const placeSchema = new Schema({
     },
     schedule:{
         type: String,
-        required: true, 
+        //required: true, 
         trim: true
     },
     website:{
         type: String,
-        required: true, 
+        //required: true, 
         trim: true
     },
     name:{
@@ -62,12 +62,12 @@ const placeSchema = new Schema({
     },
     description:{
         type: String,
-        required: true, 
+        //required: true, 
         trim: true
     },
     qDealer:{
         type: String,
-        required: true, 
+        //required: true, 
         trim: true
     }
     },{

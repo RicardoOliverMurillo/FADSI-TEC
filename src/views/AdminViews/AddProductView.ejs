@@ -1,0 +1,28 @@
+<% include partials/header%>
+<div class="col-md-5">
+    <div class="card">
+        <div class="card-body">
+                <form action="/addProduct" method="POST">
+                    <div class="form-group">
+                        <input type="text" name="idProduct" placeholder="Insert product ID" class="form-control" >
+                    </div>
+                    <div class="form-group">
+                            <input type="text" name="name" placeholder="Insert name" class="form-control" >
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="description" placeholder="Insert description" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <input type="number" name="price" placeholder="Insert price" class="form-control" >
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="idPlace" placeholder="Insert place ID" class="form-control" value="<%= data.id_place%>">
+                    </div>
+                    <div>
+                        <button type="submit" class="btn btn-success btn-block">Add Place</button>
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+<% include partials/footer%>

@@ -2,6 +2,14 @@ const Place = require('../models/Places');
 var GoogleMapsAPI = require('googlemaps');
 var https = require('https');
 
+var publicConfig = {
+    key: 'AIzaSyAKDFkr-WOl4mk3kNKAR57T7f51ZEgIiNg',
+    stagger_time:       1000, // for elevationPath
+    encode_polylines:   false,
+    secure:             true
+  };
+  var gmAPI = new GoogleMapsAPI(publicConfig);
+
 exports.createPlace = async (req, res) => {
     const PlacesFound = [];
     const place = new Place(req.body);
@@ -60,13 +68,16 @@ exports.findPlace = async (req,res)=>{
       response.on('end', function() {
         var places = JSON.parse(body);
         const placeData = {
-            idPlace: places.result.place_id,
-            latitude: places.result.geometry.location.lat,
-            longitude: places.result.geometry.location.lng,
-            address: places.result.formatted_address,
-            category: places.result.types,
-            rating:places.result.rating,
-            name: places.result.name
+            idPlace : places.result.place_id,
+            latitude : places.result.geometry.location.lat,
+            longitude : places.result.geometry.location.lng,
+            address : places.result.formatted_address,
+            category : places.result.types,
+            phone : places.result.international_phone_number,
+            rating : places.result.rating,
+            schedule : places.result.opening_hours.weekday_text,
+            website : places.result.website,
+            name : places.result.name
         }
         res.render("AdminViews/AddPlaceView", {placeData})
       });
@@ -139,5 +150,6 @@ exports.searchPlaces = function(req, res){
         }).on('error', function(e) {
         console.log("Got error: " + e.message);
         });
+        
     }
   };

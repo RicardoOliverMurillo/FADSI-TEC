@@ -3,12 +3,29 @@ var logger = require('morgan');
 var neo4j = require('neo4j-driver').v1;
 var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('adminNeo4j', '12345'));
 var session = driver.session();
+const Migration = require('../config/migration');
 
 //General variables
 const Users = require('../models/users');
 const Place = require('../models/Places');
 const Delivery = require('../models/Delivery');
 const Product = require('../models/Products');
+
+//Controller for Clients Migration View
+exports.adminClientsMigration = (req, res) =>{
+    Migration();
+    res.render('AdminViews/migrationClientsView')
+}
+
+//Controller for Places Migration View
+exports.adminPlacesMigration = (req, res) =>{
+    res.render('AdminViews/migrationPlacesView')
+}
+
+//Controller for Deliveries Migration View
+exports.adminDeliveriesMigration = (req, res) =>{
+    res.render('AdminViews/migrationDeliveriesView')
+}
 
 
 //Controller for grahp query 1: Search for a particular client and show all their order history.

@@ -1,6 +1,9 @@
 const GraphQuery = require('../controllers/graphQueryController');
 
 module.exports = (router) => {
+    router.get('/graphClientsMigration', GraphQuery.adminClientsMigration);
+    router.get('/graphPlacesMigration', GraphQuery.adminPlacesMigration);
+    router.get('/graphDeliveriesMigration', GraphQuery.adminDeliveriesMigration);
     router.get('/graphQuery1', GraphQuery.adminGraphQuery1);
     router.get('/graphQuery2', GraphQuery.adminGraphQuery2);
     router.get('/graphQuery3', GraphQuery.adminGraphQuery3);

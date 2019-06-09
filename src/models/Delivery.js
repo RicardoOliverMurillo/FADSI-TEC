@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 mongoose.set('useCreateIndex', true);
 
 const deliverySchema = new Schema({
-    idDelivery: {
+    idDelivery:{
         type: String,
         required: false, 
         trim: true
@@ -14,7 +14,8 @@ const deliverySchema = new Schema({
     },
     total: {
         type: Number,
-        trim: true
+        trim: true,
+        default: 0
     },
     date: {
         type: Date,
@@ -27,6 +28,19 @@ const deliverySchema = new Schema({
         trim: true,
         default: "Register"
     },
+    idClient:{
+        type: String,
+        required: true
+    },
+    observation:{
+        type: String,
+        required: true,
+        default: "None"
+    },
+    idPlace:{
+        type: String,
+        required: true
+    }
     },{
     timestamps: true
 });

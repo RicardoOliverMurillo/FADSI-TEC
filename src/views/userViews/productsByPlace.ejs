@@ -1,0 +1,34 @@
+<% include partials/header%>
+<div class="container">
+        <div class="row">
+            <div class="col-md-7 mx-auto">
+                <h4>Products</h4>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>    
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                            <th>Get</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < product.length; i++){ %>
+                             <tr>
+                                <td><%= product[i].idProduct%></td>
+                                <td><%= product[i].name%></td>
+                                <td><%= product[i].description%></td>
+                                <td><%= product[i].price%></td>
+                                <td>
+                                    <a href="/getProduct/<%= product[i].idProduct%>" class="btn btn-success">Add</a>
+                                </td>
+                             </tr>
+                            <%}%>    
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+<% include partials/footer%>

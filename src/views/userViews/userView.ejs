@@ -1,12 +1,36 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>FADSI-TEC Client</title>
-        <!--BOOTSTRAP-->
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">       
-    </head>
-    <body>
-        <p>hello user</p>
-    </body>
-</html>
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12 mx-auto">
+            <h4>Available Places</h4>
+            <table class="table table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>Name</th>    
+                        <th>Address</th>
+                        <th>Category</th>
+                        <th>Rating</th>
+                        <th>Buy</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% for(var i = 0; i < places.length; i++){ %>
+                         <tr>
+                            <td><%= places[i].name%></td>
+                            <td><%= places[i].address%></td>
+                            <td><%= places[i].category%></td>
+                            <td><%= places[i].rating%></td>
+                            <td>
+                                <a href="/products/<%= places[i]._id%>" class="btn btn-success">Products</a>
+                                <a href="/nearbySearch/<%= places[i]._id%>" class="btn btn-info">Search places</a>
+                            </td>
+                         </tr>
+                        <%}%>    
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<% include partials/footer%>

@@ -1,0 +1,57 @@
+<% include partials/header%>
+
+<div class="container">
+    <div class="row">
+        <!--FORM-->
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <form action="/searchPlaces" method="GET">
+                        <div class="form-group">
+                            <input type="text" name = "name" placeholder="Name" class="form-control" value="<%= place.name%>">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" step="0.0000001" name="latitude" placeholder="Insert latitude" class="form-control" value="<%= place.latitude%>">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" name="longitude" step="0.0000001" placeholder="Insert longitude" class="form-control" value="<%= place.longitude%>">
+                        </div>
+                        <div class="form-group">
+                            <input type="number" name="radius" placeholder="Radius" class="form-control">
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-success btn-block">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>Name</th>    
+                            <th>idPlace</th>
+                            <th>category</th>
+                            <th>Rating</th>
+                            <th>Options</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < PlacesFound.length; i++){ %>
+                             <tr>
+                                <td><%= PlacesFound[i].name%></td>
+                                <td><%= PlacesFound[i].idPlace%></td>
+                                <td><%= PlacesFound[i].category%></td>
+                                <td><%= PlacesFound[i].rating%></td>
+                                <td>
+                                    <a href="/placeDetails/<%= PlacesFound[i].idPlace%>" class="btn btn-success">See info</a>
+                                </td>
+                             </tr>
+                            <%}%>    
+                    </tbody>
+                </table>
+            </div>
+    </div>    
+</div>
+<% include partials/footer%>

@@ -1,0 +1,48 @@
+<% include partials/header%>
+
+<div class="container">
+        <div class="row">
+            <div class="col-md-7 mx-auto">
+                <h4>Cart</h4>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID product</th> 
+                            <th>Name</th>    
+                            <th>Quantity</th>
+                            <th>Note</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% for(var i = 0; i < pedido.length; i++){ %>
+                             <tr>
+                                <td><%= pedido[i].idProduct%></td>
+                                <td><%= pedido[i].name%></td>
+                                <td><%= pedido[i].qProduct%></td>
+                                <td><%= pedido[i].note%></td>
+                                <td><%= pedido[i].price%></td>
+                             </tr>
+                            <%}%>  
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th>Total</th> 
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><%= total%></td>
+                            </tr> 
+                        </tbody>
+                    </table>
+                <div>
+                    <a href="/addDelivery" class="btn btn-success btn-block">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<% include partials/footer%>

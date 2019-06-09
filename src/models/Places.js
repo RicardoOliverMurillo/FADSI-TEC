@@ -6,7 +6,8 @@ const placeSchema = new Schema({
     idPlace: {
         type: String,
         required: true, 
-        trim: true
+        trim: true,
+        unique: true
     },
     latitude: {
         type: Number,
@@ -40,7 +41,6 @@ const placeSchema = new Schema({
     },    
     rating: {
         type: String,
-        unique : true,
         required: true, 
         trim: true
     },

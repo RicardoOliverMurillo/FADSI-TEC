@@ -33,10 +33,12 @@ router.get('/products', productsRoutes);
 app.set('views', path.join(__dirname,'views'));
 app.set('view engine', 'ejs');
 
+app.use(express.static(__dirname + '/public'));
 app.use(cors());
 app.use(bodyParserJSON);
 app.use(bodyParserURLEncoded); 
-app.use('/api', router)
+app.use('/api', router);
+
 
 
 app.use(router);

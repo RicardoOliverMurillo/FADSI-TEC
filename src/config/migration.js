@@ -20,8 +20,8 @@ module.exports = async()=>{
 
     for(var i = 0; i < adminMongoClients.length; i++){
         const client = adminMongoClients[i];
-        console.log(client);
-        const idUser = client.idUser;
+        //console.log(client);
+        const idUser = client.idUser.toString();
         const name = client.name;
         const last_name = client.last_name;
         const birth = client.birth;
@@ -47,13 +47,13 @@ module.exports = async()=>{
         //console.log(delivery);
 
         const idDelivery = delivery._id.toString();
-        console.log(idDelivery);
+        //console.log(idDelivery);
         const product = delivery.product.length.toString();
-        console.log(product);
+        //console.log(product);
         const total = delivery.total.toString();
-        console.log(total);
+        //console.log(total);
         const date = delivery.date.toString();
-        console.log(date);
+        //console.log(date);
         const state = delivery.state;
         const idClient = delivery.idClient;
         const observation = delivery.observation;
@@ -99,5 +99,81 @@ module.exports = async()=>{
         })
     };
 
-    
+
+    for(var i = 0; i < adminMongoClients.length; i++){
+        //console.log(adminMongoClients);
+        const client = adminMongoClients[i];
+        //console.log(client);
+        const idUser = client.idUser.toString();
+        console.log("Pto1: idUser");
+        console.log(idUser);
+        const email = client.email;
+        //console.log("Pto1: email");
+        //console.log(email);
+
+        for(var j = 0; j < adminMongoDeliveries.length; j++){
+            const delivery = adminMongoDeliveries[j];
+            //console.log(delivery);
+            const idDelivery = delivery._id.toString();
+            //console.log("Pto2: idDelivery");
+            //console.log(idDelivery);
+            const idClientDelivery = delivery.idClient;
+            //console.log("Pto2: idClientDelivery");
+            //console.log(idClientDelivery);
+
+            if(idClientDelivery==email){
+                //console.log("Pto3: It is inside");
+                //console.log("Pto3: "+idDelivery);
+                //console.log("Pto3: "+idUser);
+                session
+                    .run('MATCH (a:Clients {idUser:{idUserParam}}),(b:Deliveries {idDelivery:{idDeliveryParam}}) MERGE(a)-[r:ORDER]-(b) RETURN a,b', {idDeliveryParam:idDelivery, idUserParam:idUser})
+                    .then(function(result){
+                        //console.log(idUser);
+                        //console.log(idDelivery);
+                        session.close();                
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+                //console.log("Pto3: R made");
+            };
+        };
+    };
+
+    for(var i = 0; i < adminMongoDeliveries.length; i++){
+        const delivery = adminMongoDeliveries[i];
+        //console.log(delivery);
+
+        const idDelivery = delivery._id.toString();
+        //console.log("Pto1: idDelivery");
+        //console.log(idDelivery);
+        const idPlaceDelivery = delivery.idPlace;
+        //console.log("Pto1: idPlaceDelivery");
+        //console.log(idPlaceDelivery);
+
+        for(var j = 0; j < adminMongoPlaces.length; j++){
+            const place = adminMongoPlaces[j];
+            //console.log(place);
+            const idPlace = place.idPlace;
+            //console.log("Pto2: idPlaceDelivery");
+            //console.log(idPlaceDelivery);
+            //console.log("Pto2: idPlace");
+            //console.log(idPlace);
+            if (idPlaceDelivery == idPlace){
+                //console.log("Pto3: It is inside");
+                session
+                    .run('MATCH (a:Deliveries {idDelivery:{idDeliveryParam}}),(b:Places{idPlace:{idPlaceParam}}) MERGE(a)-[r:LEAVES_FROM]-(b) RETURN a,b', {idPlaceParam:idPlace, idDeliveryParam:idDelivery})
+                    .then(function(result){
+                        session.close();                
+                    })
+                    .catch(function(err){
+                        console.log(err);
+                    })
+                //console.log("Pto3: R made");
+            };
+
+        };
+
+    };
+
 }

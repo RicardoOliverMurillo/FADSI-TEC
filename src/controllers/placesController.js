@@ -49,7 +49,7 @@ exports.updatePlace = async (req, res) => {
 exports.findPlace = async (req,res)=>{
     const { id } = req.params;
     var urlBase = "https://maps.googleapis.com/maps/api/place/details/json?placeid="+ id ;
-    var key = "[ADD KEY]"
+    var key = "&key=AIzaSyAKDFkr-WOl4mk3kNKAR57T7f51ZEgIiNg"
     var url = urlBase + key;
       console.log(url);
     https.get(url, function(response) {
@@ -86,7 +86,7 @@ exports.searchPlaces = function(req, res){
     if (req.query.address != ''){
         var urlBase = "https://maps.googleapis.com/maps/api/place/textsearch/json?query="+ req.query.address +"&key=";
 
-        var url = urlBase + "[ADD KEY]";
+        var url = urlBase + "AIzaSyAKDFkr-WOl4mk3kNKAR57T7f51ZEgIiNg";
         https.get(url, function(response) {
         var body ='';
         response.on('data', function(chunk) {
@@ -113,7 +113,7 @@ exports.searchPlaces = function(req, res){
         });
     }else if (req.query.latitude != '' && req.query.longitude != ''){
         var urlBase = "https://maps.googleapis.com/maps/api/place/textsearch/json?locationbias=circle:"+ req.query.latitude + ","+ req.query.longitude;
-        var key = "[ADD KEY]"
+        var key = "&key=AIzaSyAKDFkr-WOl4mk3kNKAR57T7f51ZEgIiNg"
         var url = urlBase + key;
         https.get(url, function(response) {
         var body ='';

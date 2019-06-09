@@ -1,3 +1,9 @@
+//Connet to Neo4j
+var logger = require('morgan');
+var neo4j = require('neo4j-driver').v1;
+var driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('adminNeo4j', '12345'));
+var session = driver.session();
+
 //General variables
 const Users = require('../models/users');
 const Place = require('../models/Places');
@@ -7,8 +13,57 @@ const Product = require('../models/Products');
 
 //Controller for grahp query 1: Search for a particular client and show all their order history.
 exports.adminGraphQuery1 = (req, res) =>{
-    res.render('AdminViews/graphQuery1View')
+    session
+        .run('MATCH (n:Person) RETURN n LIMIT 25')
+        .then(function(result){
+            var personArr = [];
+            result.records.forEach(function(record){
+                personArr.push({
+                    id: record._fields[0].identity.low,
+                    name: record._fields[0].properties.name
+                });
+            })
+            res.render('AdminViews/graphQuery1View', { persons: personArr})
+        })
+        .catch(function(err){
+            console.log(err);
+        })
 }
+
+exports.adminGraphQuery1Post = (req, res) =>{
+    var name = req.body.person_name;
+    var lastName = req.body.person_lastName;
+
+    //console.log(name);
+
+    session
+        .run('CREATE (n:Person {name:{nameParam},lastName:{lastNameParam}}) Return n.name', {nameParam:name, lastNameParam:lastName})
+        .then(function(result){
+            res.redirect('/graphQuery1');
+            session.close();                
+        })
+        .catch(function(err){
+            console.log(err);
+        })
+}
+
+exports.adminGraphQuery1PostR = (req, res) =>{
+    var name = req.body.name;
+    var title = req.body.title;
+
+    //console.log(name);
+
+    session
+        .run('MATCH (a:Person {name:{nameParam}}),(b:Movie{title:{titleParam}}) MERGE(a)-[r:LIKE]-(b) RETURN a,b', {titleParam:title, nameParam:name})
+        .then(function(result){
+            res.redirect('/graphQuery1');
+            session.close();                
+        })
+        .catch(function(err){
+            console.log(err);
+        })
+}
+
 
 //Controller for grahp query 2: See all the places where clients have placed orders.
 exports.adminGraphQuery2 = (req, res) =>{

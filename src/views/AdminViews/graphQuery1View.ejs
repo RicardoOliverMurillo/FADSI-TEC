@@ -3,7 +3,31 @@
     <h4>Client's Deliveries</h4>
     <div class="card">
         <div class="card-body">
-                
+            <form method="post" action="/graphQuery1Post">
+                <label>Person Name</label><br>
+                <input type="text" name="person_name">
+                <br>
+                <label>Person LastName</label><br>
+                <input type="text" name="person_lastName">
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
+            <h4>Person -> Movie</h4>
+            <form method="post" action="/graphQuery1PostR">
+                <label>Person Name</label><br>
+                <input type="text" name="name">
+                <br>
+                <label>Movie Title</label><br>
+                <input type="text" name="title">
+                <br><br>
+                <input type="submit" value="Submit">
+            </form>
+
+            <ul>
+                <% persons.forEach(function(person){ %>
+                    <li><%= person.name %></li>
+                <% }) %>
+            </ul>
         </div>
     </div>
 </div>

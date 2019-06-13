@@ -12,7 +12,11 @@
                         <th>Longitude</th>
                         <th>Address</th>
                         <th>Category</th>
+                        <th>Phone</th>
                         <th>Rating</th>
+                        <th>Schedule</th>
+                        <th>Website</th>
+                        <th>Dealers</th>
                         <th>Options</th>
                     </tr>
                 </thead>
@@ -25,7 +29,11 @@
                             <td><%= places[i].longitude%></td>
                             <td><%= places[i].address%></td>
                             <td><%= places[i].category%></td>
+                            <td><%= places[i].phone%></td>
                             <td><%= places[i].rating%></td>
+                            <td><%= places[i].schedule%></td>
+                            <td><%= places[i].website%></td>
+                            <td><%= places[i].qDealer%></td>
                             <td>
                                 <a href="/deletePlace/<%= places[i]._id%>" class="btn btn-danger">Delete</a>
                                 <a href="/editPlace/<%= places[i]._id%>" class="btn btn-info">Update</a>

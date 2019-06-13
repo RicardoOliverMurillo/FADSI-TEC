@@ -11,12 +11,12 @@ const placeSchema = new Schema({
     },
     latitude: {
         type: Number,
-        //required: true, 
+        required: true, 
         trim: true
     },
     longitude: {
         type: Number,
-        //required: true, 
+        required: true, 
         trim: true
     },
     address: {
@@ -30,13 +30,12 @@ const placeSchema = new Schema({
         trim: true,
     },
     image: {
-        type: String,
-        //required: true, 
+        type: String, 
         trim: true
     },
     phone: {
         type: String,
-        //required: true, 
+        required: true, 
         trim: true
     },    
     rating: {
@@ -46,12 +45,12 @@ const placeSchema = new Schema({
     },
     schedule:{
         type: String,
-        //required: true, 
+        required: true, 
         trim: true
     },
     website:{
         type: String,
-        //required: true, 
+        required: true, 
         trim: true
     },
     name:{
@@ -61,12 +60,12 @@ const placeSchema = new Schema({
     },
     description:{
         type: String,
-        //required: true, 
+        required: true, 
         trim: true
     },
     qDealer:{
         type: String,
-        //required: true, 
+        required: true, 
         trim: true
     }
     },{

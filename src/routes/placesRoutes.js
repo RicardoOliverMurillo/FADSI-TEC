@@ -7,6 +7,6 @@ module.exports = (router) => {
     router.get('/editPlace/:id', Places.findPlaceById);
     router.post('/editPlace/:id', Places.updatePlace);
     router.get('/findPlaces', Places.getFindPlaces);
-    router.get('/searchPlaces', Places.searchPlaces);
+    router.get('/search', Places.searchPlaces);
     router.get('/findPlace/:id', Places.findPlace)
 }

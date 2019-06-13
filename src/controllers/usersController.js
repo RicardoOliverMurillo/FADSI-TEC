@@ -191,7 +191,8 @@ exports.addProduct =async (req,res)=>{
         name: data[0].name,
         qProduct: req.query.qProduct,
         note: req.query.note,
-        price: data[0].price * parseInt(req.query.qProduct)
+        price: data[0].price * parseInt(req.query.qProduct),
+        idPlace: data[0].idPlace
     }
     pedido.push(product);
 
@@ -210,14 +211,18 @@ exports.viewCart = async (req,res)=>{
 //Controlador para insertar un pedido
 exports.addDelivery = async(req, res)=>{
     var total = 0;
+    var idPlace = "";
     for(var i = 0; i<pedido.length;i++){
         total = total+ pedido[i].price; 
+        idPlace = pedido[i].idPlace;
     }
     const date = new Date();
     const data = {
         product : pedido,
         total : total,
-        date : date
+        date : date,
+        idPlace : idPlace,
+        idClient : userGlobal
     }
     const delivery = new Delivery(data);
     await delivery.save();

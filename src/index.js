@@ -5,11 +5,12 @@ const properties = require('./config/props');
 const DB = require('./config/db');
 const bodyParser = require('body-parser');
 
+
 //Importing routes
 const userRoutes = require('./routes/userRoutes');
 const placesRoutes = require('./routes/placesRoutes');
 const productsRoutes = require('./routes/productsRoutes');
-
+const graphQueryRoutes = require('./routes/graphQueryRoutes');
 
 //init DB
 DB();
@@ -28,6 +29,8 @@ placesRoutes(router)
 router.get('/places', placesRoutes);
 productsRoutes(router)
 router.get('/products', productsRoutes);
+graphQueryRoutes(router)
+router.get('/graphQuery', graphQueryRoutes);
 
 //views engine
 app.set('views', path.join(__dirname,'views'));
@@ -38,8 +41,6 @@ app.use(cors());
 app.use(bodyParserJSON);
 app.use(bodyParserURLEncoded); 
 app.use('/api', router);
-
-
 
 app.use(router);
 

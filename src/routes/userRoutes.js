@@ -18,6 +18,7 @@ module.exports = (router) => {
     router.get('/wishList/:id', Users.wishList);
     router.get('/getWish', Users.getWishList);
     router.get('/placeDetails/:id', Users.placeDetails);
+    router.get('/getHistorial', Users.getHistorial);
     router.post('/login', Users.loginUser);
     router.post('/registerInfo', Users.createUser)
     

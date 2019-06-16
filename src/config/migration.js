@@ -178,7 +178,7 @@ module.exports = async()=>{
 
 }
 
-//MATCH ()-[:ORDER]->(p) WHERE p.idClient = "anjelica.tristani98@gmail.com" RETURN p
+//MATCH ()-[:ORDER]->(d) WHERE d.idClient = "anjelica.tristani98@gmail.com" RETURN d
 //MATCH ()-[:LEAVES_FROM]->(p) RETURN p
 //MATCH ()-[:LEAVES_FROM]->(p) RETURN p as Client, COUNT(p) as num ORDER BY num DESCENDING LIMIT 5
 

@@ -1,34 +1,39 @@
 <% include partials/header%>
-<div class="col-md-5">
-    <h4>Client's Deliveries</h4>
-    <div class="card">
-        <div class="card-body">
-            <form method="post" action="/graphQuery1Post">
-                <label>Person Name</label><br>
-                <input type="text" name="person_name">
-                <br>
-                <label>Person LastName</label><br>
-                <input type="text" name="person_lastName">
-                <br><br>
-                <input type="submit" value="Submit">
-            </form>
-            <h4>Person -> Movie</h4>
-            <form method="post" action="/graphQuery1PostR">
-                <label>Person Name</label><br>
-                <input type="text" name="name">
-                <br>
-                <label>Movie Title</label><br>
-                <input type="text" name="title">
-                <br><br>
-                <input type="submit" value="Submit">
-            </form>
-
-            <ul>
-                <% persons.forEach(function(person){ %>
-                    <li><%= person.name %></li>
-                <% }) %>
-            </ul>
-        </div>
-    </div>
+<div class = "col-md-12 mx-auto">
+    <h4>Client's Deliveries History</h4>
+    <form method="post" action="/graphQuery1Post">
+        <label>Client Email</label><br>
+        <input type="Email" name="email">
+        <br><br>
+        <input type="submit" value="Submit">
+    </form>
+    <table class = "table  table-sm table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>idDelivery</th>
+                <th>idClient</th>
+                <th>idPlace</th>
+                <th>date</th>
+                <th>observation</th>
+                <th>product</th>
+                <th>state</th>
+                <th>total</th>
+            </tr>
+        </thead>
+        <body>
+            <% deliveries.forEach(function(delivery){ %>
+                <tr>
+                    <td><%= delivery.idDelivery %></td>
+                    <td><%= delivery.idClient %></td>
+                    <td><%= delivery.idPlace %></td>
+                    <td><%= delivery.date %></td>
+                    <td><%= delivery.observation %></td>
+                    <td><%= delivery.product %></td>
+                    <td><%= delivery.state %></td>
+                    <td><%= delivery.total %></td>
+                </tr>
+            <% }) %> 
+        </body>
+    </table>
 </div>
 <% include partials/footer%>

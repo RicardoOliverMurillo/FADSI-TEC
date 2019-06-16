@@ -13,7 +13,9 @@ const Product = require('../models/Products');
 
 //Controller for grahp query 1: Search for a particular client and show all their order history.
 exports.adminGraphQuery1 = (req, res) =>{
-    session
+    var deliveriesArr = [];
+    res.render('AdminViews/graphQuery1View', {deliveries: deliveriesArr})
+    /*session
         .run('MATCH (n:Person) RETURN n LIMIT 25')
         .then(function(result){
             var personArr = [];
@@ -27,11 +29,11 @@ exports.adminGraphQuery1 = (req, res) =>{
         })
         .catch(function(err){
             console.log(err);
-        })
+        })*/
 }
 
 exports.adminGraphQuery1Post = (req, res) =>{
-    var name = req.body.person_name;
+    /*var name = req.body.person_name;
     var lastName = req.body.person_lastName;
 
     //console.log(name);
@@ -44,10 +46,34 @@ exports.adminGraphQuery1Post = (req, res) =>{
         })
         .catch(function(err){
             console.log(err);
+        })*/
+
+    var email = req.body.email;
+
+    session
+        .run('MATCH ()-[:ORDER]->(d) WHERE d.idClient = {emailParam} RETURN d', {emailParam:email})
+        .then(function(result){
+            var deliveriesArr = [];
+            result.records.forEach(function(record){
+                deliveriesArr.push({
+                    idDelivery: record._fields[0].properties.idDelivery,
+                    idClient: record._fields[0].properties.idClient,
+                    idPlace: record._fields[0].properties.idPlace,
+                    date: record._fields[0].properties.date,
+                    observation: record._fields[0].properties.observation,
+                    product: record._fields[0].properties.product,
+                    state: record._fields[0].properties.state,
+                    total: record._fields[0].properties.total
+                });
+            })
+            res.render('AdminViews/graphQuery1View', { deliveries: deliveriesArr})            
+        })
+        .catch(function(err){
+            console.log(err);
         })
 }
 
-exports.adminGraphQuery1PostR = (req, res) =>{
+/*exports.adminGraphQuery1PostR = (req, res) =>{
     var name = req.body.name;
     var title = req.body.title;
 
@@ -62,7 +88,7 @@ exports.adminGraphQuery1PostR = (req, res) =>{
         .catch(function(err){
             console.log(err);
         })
-}
+}*/
 
 
 //Controller for grahp query 2: See all the places where clients have placed orders.

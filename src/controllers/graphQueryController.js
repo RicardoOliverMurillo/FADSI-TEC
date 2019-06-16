@@ -18,8 +18,8 @@ exports.adminGraphQuery1 = (req, res) =>{
 }
 
 exports.adminGraphQuery1Post = (req, res) =>{
+    Migration();
     var email = req.body.email;
-
     session
         .run('MATCH ()-[:ORDER]->(d) WHERE d.idClient = {emailParam} RETURN d', {emailParam:email})
         .then(function(result){
@@ -46,7 +46,6 @@ exports.adminGraphQuery1Post = (req, res) =>{
 //Controller for grahp query 2: See all the places where clients have placed orders.
 exports.adminGraphQuery2 = (req, res) =>{
     Migration();
-
     session
     .run('MATCH ()-[:LEAVES_FROM]->(p) RETURN p')
     .then(function(result){
@@ -114,9 +113,96 @@ exports.adminGraphQuery3 = (req, res) =>{
 /*Controller for grahp query 4: Given a particular client, show all other clients who have made at least one
 order on a place in common with that customer.*/
 exports.adminGraphQuery4 = (req, res) =>{
-    Migration();
-    res.render('AdminViews/graphQuery4View')
+    var clientsArr = [];
+    res.render('AdminViews/graphQuery4View', {clients: clientsArr})
 }
+
+exports.adminGraphQuery4Post = (req, res) =>{
+    Migration();
+
+    var email = req.body.email;
+    //var placesArr = [];
+    var clientsArr = [];
+    session
+    .run('MATCH (c:Clients)-[:ORDER]->(d:Deliveries{idClient:{emailParam}})-[:LEAVES_FROM]->(p) RETURN p', {emailParam:email})
+    .then(function(result){
+        var placesArr = [];
+        result.records.forEach(function(record){
+            placesArr.push({
+                idPlace: record._fields[0].properties.idPlace
+            });
+        });
+        console.log("placesArr");
+        console.log(placesArr);
+        var num = placesArr.length;
+        var xArr = [];
+        for(i=0; i<placesArr.length; i++) {
+            idPlace = placesArr[i].idPlace
+            session
+                .run('MATCH (c:Clients)-[:ORDER]->(d:Deliveries{idPlace:{idPlaceParam}}) RETURN c', {idPlaceParam:idPlace})
+                .then(function(result){
+                    result.records.forEach(function(record){
+                        clientsArr.push({
+                            idUser: record._fields[0].properties.idUser,
+                            name: record._fields[0].properties.name,
+                            lastName: record._fields[0].properties.lastName,
+                            userName: record._fields[0].properties.userName,
+                            birth: record._fields[0].properties.birth,
+                            email: record._fields[0].properties.email,
+                            phone_number: record._fields[0].properties.phone_number
+                        });
+                        console.log("clientsArr");
+                        console.log(clientsArr);
+                        xArr=clientsArr;
+                        console.log("xArr");
+                        console.log(xArr);
+                    });
+                    console.log("Num");
+                    console.log(placesArr.length);
+                    console.log("Num1");
+                    console.log(i);
+                    if(i==num){
+                        res.render('AdminViews/graphQuery4View', {clients: xArr})
+                    }
+                })
+                .catch(function(err){
+                    console.log(err);
+                })
+        };
+    })
+    .catch(function(err){
+        console.log(err);
+    })
+
+    /*console.log("placesArr");
+    console.log(placesArr);
+
+    var clientsArr = [];*/
+    /*for(i=0; i<placesArr.length; i++) {
+
+        idPlace = clientsArr[i].idPlace
+        session
+            .run('MATCH (c:Clients)-[:ORDER]->(d:Deliveries{idPlace:{idPlaceParam}}) RETURN c', {idPlaceParam:idPlace})
+            .then(function(result){
+                result.records.forEach(function(record){
+                    clientsArr.push({
+                        idUser: record._fields[0].properties.idUser,
+                        name: record._fields[0].properties.name,
+                        lastName: record._fields[0].properties.lastName,
+                        userName: record._fields[0].properties.userName,
+                        birth: record._fields[0].properties.birth,
+                        email: record._fields[0].properties.email,
+                        phone_number: record._fields[0].properties.phone_number
+                    });
+                })
+            })
+            .catch(function(err){
+                console.log(err);
+            })
+    };*/
+}
+
+
 
 /*Controller for grahp query 5: Given a client and an order placed, the system must take the places stored in 
 the list of possible places to place orders, and must apply an algorithm to obtain the optimal route so that the 

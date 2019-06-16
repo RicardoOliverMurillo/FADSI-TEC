@@ -1,9 +1,44 @@
 <% include partials/header%>
-<div class="col-md-5">
+<div class="container"></div>
     <h4>Most Popular Places</h4>
-    <div class="card">
-        <div class="card-body">
-                
+    <div class="row">
+        <div class = "col-md-12 mx-auto">
+            <table class = "table  table-sm table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th>idPlace</th>
+                        <th>name</th>
+                        <th>address</th>
+                        <th>category</th>
+                        <th>description</th>
+                        <th>latitude</th>
+                        <th>longitude</th>
+                        <th>phone</th>
+                        <th>qDealer</th>
+                        <th>rating</th>
+                        <th>schedule</th>
+                        <th>website</th>
+                    </tr>
+                </thead>
+                <body>
+                    <% places.forEach(function(place){ %>
+                        <tr>
+                            <td><%= place.idPlace %></td>
+                            <td><%= place.name %></td>
+                            <td><%= place.address %></td>
+                            <td><%= place.category %></td>
+                            <td><%= place.description %></td>
+                            <td><%= place.latitude %></td>
+                            <td><%= place.longitude %></td>
+                            <td><%= place.phone %></td>
+                            <td><%= place.qDealer %></td>
+                            <td><%= place.rating %></td>
+                            <td><%= place.schedule %></td>
+                            <td><%= place.website %></td>
+                        </tr>
+                    <% }) %> 
+                </body>
+            </table>
         </div>
     </div>
 </div>

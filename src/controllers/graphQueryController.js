@@ -15,39 +15,9 @@ const Product = require('../models/Products');
 exports.adminGraphQuery1 = (req, res) =>{
     var deliveriesArr = [];
     res.render('AdminViews/graphQuery1View', {deliveries: deliveriesArr})
-    /*session
-        .run('MATCH (n:Person) RETURN n LIMIT 25')
-        .then(function(result){
-            var personArr = [];
-            result.records.forEach(function(record){
-                personArr.push({
-                    id: record._fields[0].identity.low,
-                    name: record._fields[0].properties.name
-                });
-            })
-            res.render('AdminViews/graphQuery1View', { persons: personArr})
-        })
-        .catch(function(err){
-            console.log(err);
-        })*/
 }
 
 exports.adminGraphQuery1Post = (req, res) =>{
-    /*var name = req.body.person_name;
-    var lastName = req.body.person_lastName;
-
-    //console.log(name);
-
-    session
-        .run('CREATE (n:Person {name:{nameParam},lastName:{lastNameParam}}) Return n.name', {nameParam:name, lastNameParam:lastName})
-        .then(function(result){
-            res.redirect('/graphQuery1');
-            session.close();                
-        })
-        .catch(function(err){
-            console.log(err);
-        })*/
-
     var email = req.body.email;
 
     session
@@ -72,24 +42,6 @@ exports.adminGraphQuery1Post = (req, res) =>{
             console.log(err);
         })
 }
-
-/*exports.adminGraphQuery1PostR = (req, res) =>{
-    var name = req.body.name;
-    var title = req.body.title;
-
-    //console.log(name);
-
-    session
-        .run('MATCH (a:Person {name:{nameParam}}),(b:Movie{title:{titleParam}}) MERGE(a)-[r:LIKE]-(b) RETURN a,b', {titleParam:title, nameParam:name})
-        .then(function(result){
-            res.redirect('/graphQuery1');
-            session.close();                
-        })
-        .catch(function(err){
-            console.log(err);
-        })
-}*/
-
 
 //Controller for grahp query 2: See all the places where clients have placed orders.
 exports.adminGraphQuery2 = (req, res) =>{
@@ -128,7 +80,35 @@ exports.adminGraphQuery2 = (req, res) =>{
 //Controller for grahp query 3: See the 5 sites for which more orders have been registered.
 exports.adminGraphQuery3 = (req, res) =>{
     Migration();
-    res.render('AdminViews/graphQuery3View')
+
+    session
+    .run('MATCH ()-[:LEAVES_FROM]->(p) RETURN p as Client, COUNT(p) as num ORDER BY num DESCENDING LIMIT 5')
+    .then(function(result){
+        var placesArr = [];
+        result.records.forEach(function(record){
+            placesArr.push({
+                //id: record._fields[0].identity.low,
+                address: record._fields[0].properties.address,
+                category: record._fields[0].properties.category,
+                description: record._fields[0].properties.description,
+                idPlace: record._fields[0].properties.idPlace,
+                latitude: record._fields[0].properties.latitude,
+                longitude: record._fields[0].properties.longitude,
+                name: record._fields[0].properties.name,
+                phone: record._fields[0].properties.phone,
+                qDealer: record._fields[0].properties.qDealer,
+                rating: record._fields[0].properties.rating,
+                schedule: record._fields[0].properties.schedule,
+                website: record._fields[0].properties.website
+            });
+        })
+        res.render('AdminViews/graphQuery3View', { places: placesArr})
+    })
+    .catch(function(err){
+        console.log(err);
+    })
+
+    //res.render('AdminViews/graphQuery3View')
 }
 
 /*Controller for grahp query 4: Given a particular client, show all other clients who have made at least one

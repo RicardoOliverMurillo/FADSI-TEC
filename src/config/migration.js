@@ -177,3 +177,10 @@ module.exports = async()=>{
     };
 
 }
+
+//MATCH ()-[:ORDER]->(p) WHERE p.idClient = "anjelica.tristani98@gmail.com" RETURN p
+//MATCH ()-[:LEAVES_FROM]->(p) RETURN p
+//MATCH ()-[:LEAVES_FROM]->(p) RETURN p as Client, COUNT(p) as num ORDER BY num DESCENDING LIMIT 5
+
+//MATCH (c:Clients)-[:ORDER]->(d:Deliveries{idClient:"rolivermurillo@gmail.com"})-[:LEAVES_FROM]->(p) RETURN p AS P
+//MATCH (c:Clients)-[:ORDER]->(d:Deliveries{idPlace:"ChIJ4Q73ehLgoI8R5GLkU02fZlw"}) RETURN c

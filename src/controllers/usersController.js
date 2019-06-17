@@ -216,13 +216,14 @@ exports.addDelivery = async(req, res)=>{
         total = total+ pedido[i].price; 
         idPlace = pedido[i].idPlace;
     }
+
     const date = new Date();
     const data = {
         product : pedido,
         total : total,
         date : date,
         idPlace : idPlace,
-        idClient : userGlobal
+        idClient : userGlobal,
     }
     const delivery = new Delivery(data);
     await delivery.save();
@@ -365,4 +366,11 @@ exports.searchPlaces = function(req, res){
     const dataUser = dataUser1[0];
     const allWishes = await Wish.find({idClient: dataUser.email});
     res.render("userViews/wishList", {allWishes, dataUser});
+  }
+
+  exports.getHistorial = async (req, res)=>{
+    const dataUser1 = await Users.find({email : userGlobal});
+    const dataUser = dataUser1[0];
+    const delivery = await Delivery.find({idClient: dataUser.email});
+    res.render("userViews/historial", {delivery, dataUser});
   }

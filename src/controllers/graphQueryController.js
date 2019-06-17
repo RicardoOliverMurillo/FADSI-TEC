@@ -67,6 +67,14 @@ exports.adminGraphQuery2 = (req, res) =>{
                 website: record._fields[0].properties.website
             });
         })
+        var hash = {};
+        placesArr = placesArr.filter(function(current) {
+            var exists = !hash[current.idPlace] || false;
+            hash[current.idPlace] = true;
+            return exists;
+        });
+        //console.log("placesArr");
+        //console.log(placesArr);
         res.render('AdminViews/graphQuery2View', { places: placesArr})
     })
     .catch(function(err){
@@ -113,13 +121,12 @@ exports.adminGraphQuery3 = (req, res) =>{
 /*Controller for grahp query 4: Given a particular client, show all other clients who have made at least one
 order on a place in common with that customer.*/
 exports.adminGraphQuery4 = (req, res) =>{
+    Migration();
     var clientsArr = [];
     res.render('AdminViews/graphQuery4View', {clients: clientsArr})
 }
 
 exports.adminGraphQuery4Post = (req, res) =>{
-    Migration();
-
     var email = req.body.email;
     //var placesArr = [];
     var clientsArr = [];
@@ -132,13 +139,24 @@ exports.adminGraphQuery4Post = (req, res) =>{
                 idPlace: record._fields[0].properties.idPlace
             });
         });
-        console.log("placesArr");
-        console.log(placesArr);
+        //console.log("placesArr");
+        //console.log(placesArr);
+        var hash = {};
+        placesArr = placesArr.filter(function(current) {
+            var exists = !hash[current.idPlace] || false;
+            hash[current.idPlace] = true;
+            return exists;
+        });
+        //console.log("placesArr");
+        //console.log(placesArr);
         var num = placesArr.length;
         var xArr = [];
-        for(i=0; i<placesArr.length; i++) {
+        for(i=0; i<num; i++) {
             idPlace = placesArr[i].idPlace
+            //console.log("idPlace");
+            //console.log(idPlace);
             session
+                //.run('MATCH (c:Clients)-[:ORDER]->(d:Deliveries{idPlace:{idPlaceParam}}) WHERE NOT c.email={emailParam} RETURN c', {idPlaceParam:idPlace,emailParam:email})
                 .run('MATCH (c:Clients)-[:ORDER]->(d:Deliveries{idPlace:{idPlaceParam}}) RETURN c', {idPlaceParam:idPlace})
                 .then(function(result){
                     result.records.forEach(function(record){
@@ -151,55 +169,38 @@ exports.adminGraphQuery4Post = (req, res) =>{
                             email: record._fields[0].properties.email,
                             phone_number: record._fields[0].properties.phone_number
                         });
-                        console.log("clientsArr");
-                        console.log(clientsArr);
-                        xArr=clientsArr;
-                        console.log("xArr");
-                        console.log(xArr);
+                        //console.log("clientsArr");
+                        //console.log(clientsArr);
+
+                        for(j=0;j<clientsArr.length;j++){
+                            //console.log("clientsArr"+j);
+                            //console.log(clientsArr[j]);
+                            xArr.push(clientsArr[j]);
+                            //console.log("xArr"+i);
+                            //console.log(xArr);
+                        }
+
+                    })
+                    var hash1 = {};
+                    xArr = xArr.filter(function(current) {
+                        var exists = !hash1[current.idUser] || false;
+                        hash1[current.idUser] = true;
+                        return exists;
                     });
-                    console.log("Num");
-                    console.log(placesArr.length);
-                    console.log("Num1");
-                    console.log(i);
-                    if(i==num){
-                        res.render('AdminViews/graphQuery4View', {clients: xArr})
-                    }
+                    console.log("ArrFINAL");
+                    console.log(xArr);
+                    res.render('AdminViews/graphQuery4View', {clients: xArr});
+                    //res.redirect('/graphQuery4', {clients: xArr});
+                    //res.send({clients: xArr});
                 })
                 .catch(function(err){
                     console.log(err);
                 })
-        };
+            }  
     })
     .catch(function(err){
         console.log(err);
     })
-
-    /*console.log("placesArr");
-    console.log(placesArr);
-
-    var clientsArr = [];*/
-    /*for(i=0; i<placesArr.length; i++) {
-
-        idPlace = clientsArr[i].idPlace
-        session
-            .run('MATCH (c:Clients)-[:ORDER]->(d:Deliveries{idPlace:{idPlaceParam}}) RETURN c', {idPlaceParam:idPlace})
-            .then(function(result){
-                result.records.forEach(function(record){
-                    clientsArr.push({
-                        idUser: record._fields[0].properties.idUser,
-                        name: record._fields[0].properties.name,
-                        lastName: record._fields[0].properties.lastName,
-                        userName: record._fields[0].properties.userName,
-                        birth: record._fields[0].properties.birth,
-                        email: record._fields[0].properties.email,
-                        phone_number: record._fields[0].properties.phone_number
-                    });
-                })
-            })
-            .catch(function(err){
-                console.log(err);
-            })
-    };*/
 }
 
 

@@ -20,17 +20,17 @@
             </tr>
         </thead>
         <body>
-            <% clients.forEach(function(client){ %>
+            <% for(var i = 0; i < clients.length; i++) { %>
                 <tr>
-                    <td><%= client.idUser %></td>
-                    <td><%= client.name %></td>
-                    <td><%= client.lastName %></td>
-                    <td><%= client.userName %></td>
-                    <td><%= client.birth %></td>
-                    <td><%= client.email %></td>
-                    <td><%= client.phone_number %></td>
+                    <td><%= clients[i].idUser %></td>
+                    <td><%= clients[i].name %></td>
+                    <td><%= clients[i].lastName %></td>
+                    <td><%= clients[i].userName %></td>
+                    <td><%= clients[i].birth %></td>
+                    <td><%= clients[i].email %></td>
+                    <td><%= clients[i].phone_number %></td>
                 </tr>
-            <% }) %> 
+            <% } %> 
         </body>
     </table>
 </div>
